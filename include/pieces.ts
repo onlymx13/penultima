@@ -14,18 +14,19 @@ export enum PieceType {
     Pawn,
 }
 
+export interface Position {
+    rank: number; // 1-indexed, 1-8
+    file: number; // 1-indexed, 1-8
+}
+
 export interface Piece {
     color: Color;
     type: PieceType;
     position: Position;
 }
 
-export interface Position {
-    rank: number; // 1-indexed, 1-8
-    file: number; // 1-indexed, 1-8
-}
-
 export const defaultPieces: Piece[] = [
+    // This is the default state of a chessboard in vanilla chess. Maybe add support for changing this if the custom rules require it.
     {color: Color.White, type: PieceType.Rook,   position: {rank: 1, file: 1}},
     {color: Color.White, type: PieceType.Knight, position: {rank: 1, file: 2}},
     {color: Color.White, type: PieceType.Bishop, position: {rank: 1, file: 3}},

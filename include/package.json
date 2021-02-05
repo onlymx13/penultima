@@ -1,0 +1,13 @@
+{
+  "name": "include",
+  "version": "1.0.0",
+  "description": "includes",
+  "main": "include.js",
+  "type": "module",
+  "scripts": {
+      "build": "tsc",
+      "tsc": "tsc"
+  },
+  "author": "",
+  "license": "MIT"
+}

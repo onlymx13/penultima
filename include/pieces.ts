@@ -1,0 +1,64 @@
+"use strict";
+import {Gamer, MIN_GAMER_COUNT} from "../include/include.js";
+
+export enum Color {
+    White,
+    Black,
+}
+export enum PieceType {
+    King,
+    Queen,
+    Rook,
+    Bishop,
+    Knight,
+    Pawn,
+}
+
+export interface Piece {
+    color: Color;
+    type: PieceType;
+    position: Position;
+}
+
+export interface Position {
+    rank: number; // 1-indexed, 1-8
+    file: number; // 1-indexed, 1-8
+}
+
+export const defaultPieces: Piece[] = [
+    {color: Color.White, type: PieceType.Rook,   position: {rank: 1, file: 1}},
+    {color: Color.White, type: PieceType.Knight, position: {rank: 1, file: 2}},
+    {color: Color.White, type: PieceType.Bishop, position: {rank: 1, file: 3}},
+    {color: Color.White, type: PieceType.Queen,  position: {rank: 1, file: 4}},
+    {color: Color.White, type: PieceType.King,   position: {rank: 1, file: 5}},
+    {color: Color.White, type: PieceType.Bishop, position: {rank: 1, file: 6}},
+    {color: Color.White, type: PieceType.Knight, position: {rank: 1, file: 7}},
+    {color: Color.White, type: PieceType.Rook,   position: {rank: 1, file: 8}},
+
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 1}},
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 2}},
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 3}},
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 4}},
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 5}},
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 6}},
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 7}},
+    {color: Color.White, type: PieceType.Pawn,   position: {rank: 2, file: 8}},
+
+    {color: Color.Black, type: PieceType.Rook,   position: {rank: 8, file: 1}},
+    {color: Color.Black, type: PieceType.Knight, position: {rank: 8, file: 2}},
+    {color: Color.Black, type: PieceType.Bishop, position: {rank: 8, file: 3}},
+    {color: Color.Black, type: PieceType.Queen,  position: {rank: 8, file: 4}},
+    {color: Color.Black, type: PieceType.King,   position: {rank: 8, file: 5}},
+    {color: Color.Black, type: PieceType.Bishop, position: {rank: 8, file: 6}},
+    {color: Color.Black, type: PieceType.Knight, position: {rank: 8, file: 7}},
+    {color: Color.Black, type: PieceType.Rook,   position: {rank: 8, file: 8}},
+
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 1}},
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 2}},
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 3}},
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 4}},
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 5}},
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 6}},
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 7}},
+    {color: Color.Black, type: PieceType.Pawn,   position: {rank: 7, file: 8}},
+];

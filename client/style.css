@@ -1,4 +1,26 @@
 #chessboard {
-    border: 1px solid black;
+    border: 1px solid black; /*TODO: Fix the border so it is around the actual chessboard*/
     border-spacing: 0px;
+    display: none;
+}
+
+.cell {
+    font-size: 30px;
+    text-align: center;
+}
+
+.rank-label {
+    text-align: center;
+}
+
+.file-label {
+    text-align: center;
+}
+
+#start-game {
+    font-size: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    display: none;
 }

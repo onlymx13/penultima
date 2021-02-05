@@ -5,15 +5,25 @@
 </head>
 <body>
 <h1>Penultima</h1>
-<table id="chessboard"></table>
-<button id="start-game" hidden>Start Game</button>
-<div id="spectator-chat" hidden>
-  <ul id="messages"></ul>
-  <form id="message-form" action="">
-  <input id="message-input" autocomplete=off></input><button>Send</button>
-</div>
+<table>
+  <tr>
+    <td>
+      <table id="chessboard"></table>
+     <button id="start-game">Start Game</button>
+    </td>
+    <td>
+      <div id="spectator-chat" hidden>
+        <ul id="messages"></ul>
+        <form id="message-form" action="">
+        <input id="message-input" autocomplete=off></input><button>Send</button>
+     </div>
+    </td>
+  </tr>
+</table>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="include/include.js" type="module"></script>
+<script src="include/pieces.js" type="module"></script>
 <script src="client/main.js" type="module"></script>
 </body>
 </html>

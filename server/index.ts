@@ -52,7 +52,6 @@ io.on("connection", (socket: Socket) => {
             }
             io.to(whitePlayerId).emit("you are", Gamer.Player, blackPlayerId, Color.White);
             io.to(blackPlayerId).emit("you are", Gamer.Player, whitePlayerId, Color.Black);
-            //io.emit("Spectators discussion time", io.sockets.sockets.size);
         } else {
             socket.emit("not enough players", io.sockets.sockets.size);
         }

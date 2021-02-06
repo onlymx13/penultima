@@ -1,5 +1,4 @@
 "use strict";
-import {Gamer, MIN_GAMER_COUNT} from "../include/include.js";
 
 export enum Color {
     White,
@@ -14,15 +13,20 @@ export enum PieceType {
     Pawn,
 }
 
-export interface Position {
+export interface AbsolutePosition {
     rank: number; // 1-indexed, 1-8
     file: number; // 1-indexed, 1-8
+}
+
+export interface RelativePosition {
+    x: number; // 0-indexed, 0-7
+    y: number; // 0-indexed, 0-7
 }
 
 export interface Piece {
     color: Color;
     type: PieceType;
-    position: Position;
+    position: AbsolutePosition;
 }
 
 export const defaultPieces: Piece[] = [

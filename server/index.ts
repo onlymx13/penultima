@@ -1,6 +1,6 @@
 "use strict";
 import {Gamer, MIN_GAMER_COUNT} from "../include/include.js";
-import {Color, PieceType, Piece, defaultPieces} from "../include/pieces.js";
+import {Color, Piece, defaultPieces, AbsolutePosition} from "../include/pieces.js";
 import express from "express";
 const app = express();
 import {createServer} from "http";
@@ -16,6 +16,7 @@ app.get('/', (req: any, res: any) => {
     res.sendFile("./client/index.html", { root: '.' });
 });
 
+let undoTree : Piece[][] = []; // smh, it's 1D and not a tree
 io.on("connection", (socket: Socket) => {
     console.log("a gamer connected :)");
     if (io.sockets.sockets.size === 1) {
@@ -55,8 +56,31 @@ io.on("connection", (socket: Socket) => {
         } else {
             socket.emit("not enough players", io.sockets.sockets.size);
         }
-        let pieces : Piece[] = defaultPieces;
-        io.emit("update pieces", pieces);
+        undoTree[0] = defaultPieces;
+        io.emit("update pieces", undoTree[0], false);
+    });
+    socket.on("move", (source: AbsolutePosition, dest: AbsolutePosition) => {
+        undoTree.push(JSON.parse(JSON.stringify(undoTree[undoTree.length - 1]))); // Duplicate the last element, and now we'll modify it. Use JSON to avoid copying by reference.
+        // Pass 1: Capture
+        //! clicking an empty square, then a filled square will remove the piece. Maybe pass this off as a "feature"?
+        for (let i = 0; i < undoTree[undoTree.length - 1].length; i++) {
+            if (undoTree[undoTree.length - 1][i].position.file === dest.file && undoTree[undoTree.length - 1][i].position.rank === dest.rank) {
+                undoTree[undoTree.length - 1].splice(i--, 1); // Remove any piece on the destination square (capture)
+                break; // Assume only one piece can be on that square, and capture only that one.
+            }
+        }
+        // Pass 2: Move
+        for (let i = 0; i < undoTree[undoTree.length - 1].length; i++) {
+            if (undoTree[undoTree.length - 1][i].position.file === source.file && undoTree[undoTree.length - 1][i].position.rank === source.rank) {
+                undoTree[undoTree.length - 1][i].position = dest;  
+                break;
+            }
+        }
+        io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
+    });
+    socket.on("undo", () => {
+        undoTree.pop();
+        io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
     });
 });
 

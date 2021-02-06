@@ -21,6 +21,19 @@
         </td>
       </tr>
     </table>
+    <button id="help-button">Help</button>
+    <p id="help" hidden>
+      <a href="https://en.wikipedia.org/wiki/Penultima">Penultima</a> is a game of inductive logic played on a chessboard.
+      It's similar to a cross between <a href="https://en.wikipedia.org/wiki/Mao_(card_game)">Mao</a> and <a href="https://en.wikipedia.org/wiki/Chess">chess</a>.
+      Each player is assigned a role, either Spectator or Player. There are always two Players, and everyone else is a Spectator.
+      At the beginning of the game, the Spectators create rules in secret to decide how the pieces move, capture, or interact.
+      Spectators have their own private chat visible to all other Spectators, but not to the Players. They use it to discuss the rules and their interactions during the game.
+      Pieces may also be assigned a rule that takes effect when the piece is <i>invoked</i>, which is like a special ability that the piece can use instead of moving.
+      Players take turns attempting to move or invoke a piece, and the Spectators tell them whether their move was legal, undoing it if necessary.
+      At that point, play may pass to the other Player, or the original Player may continue, depending on house rules.
+      Victory occurs by checkmate.
+      In this implementation of the game, currently very little is enforced. It is up to the Players and Spectators to enforce rules accurately. Think of this as a chessboard sandbox.
+    </p>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="include/include.js" type="module"></script>

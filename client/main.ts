@@ -50,6 +50,15 @@ function relToAbsPos(relpos: RelativePosition, player: Color): AbsolutePosition 
 declare var io: () => any;
 const socket = io();
 
+const helpButton = document.getElementById("help-button");
+const helpText = document.getElementById("help");
+if (helpText) {
+    helpButton?.addEventListener("click", (event: MouseEvent) => {
+        event.preventDefault();
+        helpText.hidden = !helpText.hidden;
+    });
+}
+
 socket.on("too few players", (playerCount: number) => {
     alert(`Bruh, everyone disconnected except ${playerCount} players. What noobs. Literally, just refresh the page. I'm too lazy to code this.`);
 });

@@ -19,7 +19,7 @@
 	"scripts": {
 		"clean": "rm -rf build",
 		"tsc": "tsc",
-		"penultima": "cd include && npm run build && cd .. && mkdir -p build/client && cp client/index.html build/client/ && cp client/style.css build/client && tsc && node --trace-warnings ./build/server/index.js"
+		"penultima": "cd include && npm run build && cd .. && mkdir -p build/client && cp client/*.html build/client/ && cp client/*.css build/client && tsc && node --trace-warnings ./build/server/index.js"
 	},
 	"optionalDependencies": {
 		"bufferutil": "^4.0.3",

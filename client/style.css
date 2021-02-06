@@ -9,6 +9,12 @@
     text-align: center;
 }
 
+#messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .rank-label {
     text-align: center;
 }

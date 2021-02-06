@@ -89,11 +89,10 @@ socket.on("you are", (playerType: Gamer, otherPlayer?: number, color?: Color) =>
     startGameButton!.style.display = "none";
     if (playerType === Gamer.Spectator) {
         console.log("spec");
-        undoButton!.hidden = false;
+        document.getElementById("spectator-stuff")!.hidden = false;
         const messageForm = document.getElementById("message-form");
         const messageInput = document.getElementById("message-input");
         const messages = document.getElementById("messages");
-        document.getElementById("spectator-chat")!.hidden = false;
         messageForm?.addEventListener("submit", event => {
             event.preventDefault();
             if ((<HTMLInputElement>messageInput)?.value) {

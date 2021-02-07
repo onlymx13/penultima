@@ -90,8 +90,10 @@ io.on("connection", (socket: Socket) => {
         io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
     });
     socket.on("undo", () => {
-        undoTree.pop();
-        io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
+        if (undoTree.length > 1) {
+            undoTree.pop();
+            io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
+        }
     });
 });
 

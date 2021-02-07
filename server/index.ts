@@ -25,8 +25,12 @@ io.on("connection", (socket: Socket) => {
     socket.on('disconnect', () => {
         console.log("a gamer disconnected :(");
 	if (io.sockets.sockets.size < MIN_GAMER_COUNT) {
-            io.emit("too few players", io.sockets.sockets.size);
+        io.emit("too few players", io.sockets.sockets.size);
 	}
+    if (io.sockets.sockets.size === 0) {
+        // Reset the game state entirely.
+        undoTree = [];
+    }
     });
     socket.on("spectator message", (content: string) => {
         io.emit("spectator message", content);

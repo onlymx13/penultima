@@ -30,3 +30,8 @@
     margin-top: 15px;
     display: none;
 }
+
+.add-piece-button {
+    display: block;
+    font-size: 30px;
+}

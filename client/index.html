@@ -8,16 +8,23 @@
     <table>
       <tr>
         <td>
-          <table id="chessboard"></table>
+          <table id="chessboard" class="hidden-until-start"></table>
           <button id="start-game">Start Game</button>
         </td>
-        <td id="spectator-stuff" hidden>
+        <td class="spectator-stuff" hidden>
           <button id="undo-button">Undo</button>
           <div id="spectator-chat">
             <ul id="messages"></ul>
             <form id="message-form" action="">
             <input id="message-input" autocomplete=off></input><button>Send</button>
           </div>
+        </td>
+        <td id="piece-adding-stuff" class="hidden-until-start">
+          <h1>Add Pieces</h1>
+          <table>
+            <tr id="add-pieces">
+            </tr>
+          </table>
         </td>
       </tr>
     </table>

@@ -50,6 +50,10 @@ function relToAbsPos(relpos: RelativePosition, player: Color): AbsolutePosition 
 declare var io: () => any;
 const socket = io();
 
+
+// Hide everything that wants to be hidden until start.
+Array.from(document.getElementsByClassName("hidden-until-start") as HTMLCollectionOf<HTMLElement>).forEach(x => x.style.display = "none");
+
 const helpButton = document.getElementById("help-button");
 const helpText = document.getElementById("help");
 if (helpText) {
@@ -82,14 +86,23 @@ socket.on("not enough players", (playerCount: number) => {
 });
 
 let myColor: Color;
-let firstSquare: AbsolutePosition = {rank: 1, file: 1};
-let pickingSecondSquare = false;
+let firstSquare: RelativePosition = {x: -1, y: -1};
+
+enum Action {
+    PickingFirstSquare,
+    PickingSecondSquare,
+    PlacingPiece,
+}
+let currAction = Action.PickingFirstSquare;
+
+let pieceToBePlaced: Piece;
 
 socket.on("you are", (playerType: Gamer, otherPlayer?: number, color?: Color) => {
     startGameButton!.style.display = "none";
     if (playerType === Gamer.Spectator) {
         console.log("spec");
-        document.getElementById("spectator-stuff")!.hidden = false;
+        //TODO: Too many ways to hide stuff in HTML
+        Array.from(document.getElementsByClassName("spectator-stuff") as HTMLCollectionOf<HTMLElement>)!.forEach(x => x.hidden = false);
         const messageForm = document.getElementById("message-form");
         const messageInput = document.getElementById("message-input");
         const messages = document.getElementById("messages");
@@ -132,20 +145,32 @@ socket.on("you are", (playerType: Gamer, otherPlayer?: number, color?: Color) =>
             cell.style.height = CELL_SIZE;
 	        cell.style.width = CELL_SIZE;
             const listener = cell.addEventListener("click", (event: MouseEvent) => {
-                if (pickingSecondSquare) {
-                    const firstPos = absToRelPos(firstSquare, myColor);
-                    const newPos = {x: Number(cell.id.slice(4, 5)), y: Number(cell.id.slice(6, 7))};
-                    const oldCell = document.getElementById("cell" + firstPos.x + "," + firstPos.y);
+                if (currAction === Action.PickingSecondSquare) {
+                    const newPos: RelativePosition = {x: Number(cell.id.slice(4, 5)), y: Number(cell.id.slice(6, 7))};
+                    const oldCell = document.getElementById("cell" + firstSquare.x + "," + firstSquare.y);
                     if (oldCell)
                        oldCell.style.backgroundColor = oldCell?.style.backgroundColor === highlightedBlackSquareColor ? blackSquareColor : whiteSquareColor;
-                    if (newPos.x !== firstPos.x || newPos.y !== firstPos.y) { // Don't move a piece to the same square it's on.
-                        socket.emit("move", firstSquare, relToAbsPos(newPos, myColor));
+                    if (newPos.x !== firstSquare.x || newPos.y !== firstSquare.y) { // Don't move a piece to the same square it's on.
+                        socket.emit("move", relToAbsPos(firstSquare, myColor), relToAbsPos(newPos, myColor));
                     }
-                    pickingSecondSquare = false;
-                } else {
+                    firstSquare = {x: -1, y: -1};
+                    currAction = Action.PickingFirstSquare;
+                } else if (currAction === Action.PickingFirstSquare) {
                     cell.style.backgroundColor = cell.style.backgroundColor === blackSquareColor ? highlightedBlackSquareColor : highlightedWhiteSquareColor;
-                    firstSquare = relToAbsPos({x: Number(cell.id.slice(4, 5)), y: Number(cell.id.slice(6, 7))}, myColor);
-                    pickingSecondSquare = true;
+                    firstSquare = {x: Number(cell.id.slice(4, 5)), y: Number(cell.id.slice(6, 7))}, myColor;
+                    currAction = Action.PickingSecondSquare;
+                } else if (currAction === Action.PlacingPiece) {
+                    //TODO: code duplicated from above
+                    const newPos: RelativePosition = {x: Number(cell.id.slice(4, 5)), y: Number(cell.id.slice(6, 7))};
+                    if (!(firstSquare.x === -1 && firstSquare.y === -1)) {
+                        // If a first square was picked, un-highlight it.
+                        const oldCell = document.getElementById("cell" + firstSquare.x + "," + firstSquare.y);
+                        if (oldCell)
+                            oldCell.style.backgroundColor = oldCell?.style.backgroundColor === highlightedBlackSquareColor ? blackSquareColor : whiteSquareColor;
+                    }
+                    pieceToBePlaced.position = relToAbsPos(newPos, myColor);
+                    socket.emit("place", pieceToBePlaced);
+                    currAction = Action.PickingFirstSquare;
                 }
             });
 	        row.appendChild(cell);
@@ -162,9 +187,24 @@ socket.on("you are", (playerType: Gamer, otherPlayer?: number, color?: Color) =>
     }
     table?.appendChild(row);
     table!.style.display = "table";
+
+    const addPieces = document.getElementById("add-pieces"); // tr
+    glyphs.forEach((pieceTypes: Map<PieceType, string>, color: Color) => {
+        const td = document.createElement("td");
+        pieceTypes.forEach((glyph: string, pieceType: PieceType) => {
+            const button = document.createElement("button");
+            button.classList.add("add-piece-button");
+            button.textContent = glyph;
+            button.addEventListener("click", (event: MouseEvent) => {
+                currAction = Action.PlacingPiece; //TODO: do this in a big brain way with promises
+                pieceToBePlaced = {color: color, type: pieceType, position: {rank: 1, file: 1}};
+            });
+            td.appendChild(button);
+        });
+        addPieces?.appendChild(td);
+    })
+    document.getElementById("piece-adding-stuff")!.style.display = "block";
 });
-
-
 
 socket.on("update pieces", (pieces : Piece[], undoAllowed : boolean) => {
     (<HTMLButtonElement>undoButton)!.disabled = !undoAllowed;

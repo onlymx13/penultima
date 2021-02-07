@@ -78,6 +78,17 @@ io.on("connection", (socket: Socket) => {
         }
         io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
     });
+    socket.on("place", (piece: Piece) => {
+        for (let i = 0; i < undoTree[undoTree.length - 1].length; i++) {
+            if (undoTree[undoTree.length - 1][i].position.file === piece.position.file && undoTree[undoTree.length - 1][i].position.rank === piece.position.rank) {
+                // If another piece is where this piece would go, do nothing.
+                return;
+            }
+        }
+        undoTree.push(JSON.parse(JSON.stringify(undoTree[undoTree.length - 1]))); // Duplicate the last element, and now we'll modify it. Use JSON to avoid copying by reference.
+        undoTree[undoTree.length - 1].push(piece);
+        io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
+    });
     socket.on("undo", () => {
         undoTree.pop();
         io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);

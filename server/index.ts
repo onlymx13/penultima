@@ -60,7 +60,11 @@ io.on("connection", (socket: Socket) => {
         io.emit("update pieces", undoTree[0], false);
     });
     socket.on("move", (source: AbsolutePosition, dest: AbsolutePosition) => {
-        undoTree.push(JSON.parse(JSON.stringify(undoTree[undoTree.length - 1]))); // Duplicate the last element, and now we'll modify it. Use JSON to avoid copying by reference.
+        if (undoTree[undoTree.length - 1] !== undefined) {
+            undoTree.push(JSON.parse(JSON.stringify(undoTree[undoTree.length - 1]))); // Duplicate the last element, and now we'll modify it. Use JSON to avoid copying by reference.
+        } else {
+            console.log(undoTree);
+        }
         // Pass 1: Capture
         //! clicking an empty square, then a filled square will remove the piece. Maybe pass this off as a "feature"?
         for (let i = 0; i < undoTree[undoTree.length - 1].length; i++) {
@@ -85,7 +89,11 @@ io.on("connection", (socket: Socket) => {
                 return;
             }
         }
-        undoTree.push(JSON.parse(JSON.stringify(undoTree[undoTree.length - 1]))); // Duplicate the last element, and now we'll modify it. Use JSON to avoid copying by reference.
+        if (undoTree[undoTree.length - 1] !== undefined) {
+            undoTree.push(JSON.parse(JSON.stringify(undoTree[undoTree.length - 1]))); // Duplicate the last element, and now we'll modify it. Use JSON to avoid copying by reference.
+        } else {
+            console.log(undoTree);
+        }
         undoTree[undoTree.length - 1].push(piece);
         io.emit("update pieces", undoTree[undoTree.length - 1], undoTree.length > 1);
     });

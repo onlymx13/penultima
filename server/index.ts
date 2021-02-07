@@ -95,6 +95,6 @@ io.on("connection", (socket: Socket) => {
     });
 });
 
-httpServer.listen(process.env.port || 3000, () => {
-    console.log(`listening on port ${process.env.port || 3000}`);
+httpServer.listen(process.env.PORT || 3000, () => {
+    console.log(`listening on port ${process.env.PORT || 3000}`);
 });

@@ -19,7 +19,7 @@
 	"scripts": {
 		"clean": "rm -rf build",
 		"tsc": "tsc",
-		"start": "npm install && npm install typescript && cd include && npm run start && cd .. && mkdir -p build/client && cp client/*.html build/client/ && cp client/*.css build/client && tsc && node --trace-warnings ./build/server/index.js"
+		"start": "npm install && npm install typescript && mkdir -p build/client && cp client/*.html build/client/ && cp client/*.css build/client && tsc && node --trace-warnings ./build/server/index.js"
 	},
 	"optionalDependencies": {
 		"bufferutil": "^4.0.3",

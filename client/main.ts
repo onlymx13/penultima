@@ -182,7 +182,11 @@ socket.on("you are", (playerType: Gamer, otherPlayer?: number, color?: Color) =>
     for (let i = 0; i < FILE_COUNT; i++) {
         const fileLabel = document.createElement("td");
         fileLabel.classList.add("file-label");
-        fileLabel.textContent = "abcdefgh"[i];
+        if (myColor === Color.White) {
+            fileLabel.textContent = "abcdefgh"[i];
+        } else {
+            fileLabel.textContent = "hgfedcba"[i];
+        }
         row.appendChild(fileLabel);
     }
     table?.appendChild(row);

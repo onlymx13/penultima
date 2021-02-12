@@ -68,6 +68,7 @@ io.on("connection", (socket: Socket) => {
             undoTree.push(JSON.parse(JSON.stringify(undoTree[undoTree.length - 1]))); // Duplicate the last element, and now we'll modify it. Use JSON to avoid copying by reference.
         } else {
             console.log(undoTree);
+            return;
         }
         // Pass 1: Capture
         //! clicking an empty square, then a filled square will remove the piece. Maybe pass this off as a "feature"?

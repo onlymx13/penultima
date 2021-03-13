@@ -16,7 +16,7 @@ app.get('/', (req: any, res: any) => {
     res.sendFile("./client/index.html", { root: '.' });
 });
 
-let undoTree : Piece[][] = []; // smh, it's 1D and not a tree
+var undoTree : Piece[][] = []; // smh, it's 1D and not a tree
 io.on("connection", (socket: Socket) => {
     console.log("a gamer connected :)");
     if (io.sockets.sockets.size === 1) {
